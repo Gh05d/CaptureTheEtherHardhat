@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
@@ -13,16 +13,12 @@ describe('DeployAContract', () => {
 
     target = await (await ethers.getContractFactory('CallMeChallenge', deployer)).deploy();
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Contract, Wallet } from 'ethers';
 import { ethers } from 'hardhat';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('FuzzyIdentityChallenge', () => {
   let target: Contract;

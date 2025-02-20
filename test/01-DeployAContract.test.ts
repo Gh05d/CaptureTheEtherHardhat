@@ -1,4 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
@@ -13,10 +13,6 @@ describe('DeployAContract', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
-
     expect(await target.isComplete()).to.equal(true);
   });
 });
