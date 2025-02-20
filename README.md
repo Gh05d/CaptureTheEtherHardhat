@@ -1,11 +1,14 @@
 # Capture the Ether with Hardhat
 
 Challenges from [Capture the ether](https://capturetheether.com/) on hardhat.
+
 ## How to use:
 
 1. Clone this repo.
-2. Complete the challenges on `./test/`.
-3. Verify the result running ``yarn test``.
+2. Run `npm install`
+3. Start a local hardhat server with `npx hardhat node`
+4. Complete the challenges in `./test/`.
+5. Verify the result running ``npm run test``.
 
 ## Challenges
 
