@@ -16,7 +16,7 @@ describe('DeployAContract', () => {
       await ethers.getContractFactory('CaptureTheEther', attacker)
     ).deploy(attacker.address);
 
-    await captureTheEther.deployed();
+    await captureTheEther.waitForDeployment();
 
     target = await (
       await ethers.getContractFactory('NicknameChallenge')
@@ -26,10 +26,6 @@ describe('DeployAContract', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

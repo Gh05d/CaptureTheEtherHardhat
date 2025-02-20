@@ -13,7 +13,7 @@ describe('MappingChallenge', () => {
 
     target = await (await ethers.getContractFactory('MappingChallenge', deployer)).deploy();
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });

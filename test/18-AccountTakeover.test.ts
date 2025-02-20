@@ -13,7 +13,7 @@ describe('AccountTakeover', () => {
 
     target = await (await ethers.getContractFactory('AccountTakeover', deployer)).deploy();
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });

@@ -15,7 +15,7 @@ describe('TokenWhaleChallenge', () => {
       await ethers.getContractFactory('TokenWhaleChallenge', deployer)
     ).deploy(attacker.address);
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });

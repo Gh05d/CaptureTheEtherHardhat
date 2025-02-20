@@ -13,7 +13,7 @@ describe('FuzzyIdentityChallenge', () => {
 
     target = await (await ethers.getContractFactory('FuzzyIdentityChallenge', deployer)).deploy();
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });

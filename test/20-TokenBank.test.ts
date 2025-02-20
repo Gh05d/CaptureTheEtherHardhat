@@ -22,13 +22,13 @@ describe('TokenBankChallenge', () => {
 
     target = await targetFactory.deploy(attacker.address);
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     const tokenAddress = await target.token();
 
     token = await tokenFactory.attach(tokenAddress);
 
-    await token.deployed();
+    await token.waitForDeployment();
 
     target = target.connect(attacker);
     token = token.connect(attacker);

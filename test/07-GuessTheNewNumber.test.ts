@@ -18,7 +18,7 @@ describe('GuessTheNewNumberChallenge', () => {
       value: utils.parseEther('1'),
     });
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = await target.connect(attacker);
   });

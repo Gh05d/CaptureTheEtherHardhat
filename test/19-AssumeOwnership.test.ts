@@ -13,7 +13,7 @@ describe('AssumeOwnershipChallenge', () => {
 
     target = await (await ethers.getContractFactory('AssumeOwnershipChallenge', deployer)).deploy();
 
-    await target.deployed();
+    await target.waitForDeployment();
 
     target = target.connect(attacker);
   });
