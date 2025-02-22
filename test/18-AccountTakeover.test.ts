@@ -1,17 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
+import { AccountTakeoverChallenge } from '../typechain-types';
 
 describe('AccountTakeover', () => {
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
-  let target: Contract;
+  let target: AccountTakeoverChallenge;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (await ethers.getContractFactory('AccountTakeover', deployer)).deploy();
+    target = (await (
+      await ethers.getContractFactory('AccountTakeover', deployer)
+    ).deploy()) as unknown as AccountTakeoverChallenge;
 
     await target.waitForDeployment();
 

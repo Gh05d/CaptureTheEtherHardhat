@@ -15,7 +15,7 @@ describe('RetirementFundChallenge', () => {
     target = await (
       await ethers.getContractFactory('RetirementFundChallenge', deployer)
     ).deploy(attacker.address, {
-      value: utils.parseEther('1'),
+      value: ethers.parseEther('1'),
     });
 
     await target.waitForDeployment();

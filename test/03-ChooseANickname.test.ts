@@ -3,11 +3,13 @@ import { expect } from 'chai';
 import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
 
-describe('DeployAContract', () => {
+import { NicknameChallenge } from '../typechain-types';
+
+describe('NicknameChallenge', () => {
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
   let captureTheEther: Contract;
-  let target: Contract;
+  let target: NicknameChallenge;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
@@ -18,14 +20,18 @@ describe('DeployAContract', () => {
 
     await captureTheEther.waitForDeployment();
 
-    target = await (
+    target = (await (
       await ethers.getContractFactory('NicknameChallenge')
-    ).attach(await captureTheEther.playerNicknameContract(attacker.address));
+    ).attach(
+      await captureTheEther.playerNicknameContract(attacker.address)
+    )) as unknown as NicknameChallenge;
 
     target = target.connect(attacker);
   });
 
   it('exploit', async () => {
+    await captureTheEther.setNickname(ethers.encodeBytes32String('Evil Nickname'));
+
     expect(await target.isComplete()).to.equal(true);
   });
 });

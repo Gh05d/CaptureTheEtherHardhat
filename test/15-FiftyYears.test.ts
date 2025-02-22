@@ -15,7 +15,7 @@ describe('FiftyYearsChallenge', () => {
     target = await (
       await ethers.getContractFactory('FiftyYearsChallenge', deployer)
     ).deploy(deployer.address, {
-      value: utils.parseEther('1'),
+      value: ethers.parseEther('1'),
     });
 
     await target.waitForDeployment();

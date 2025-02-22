@@ -1,17 +1,19 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
+import { MappingChallenge } from '../typechain-types';
 
 describe('MappingChallenge', () => {
-  let target: Contract;
+  let target: MappingChallenge;
   let attacker: SignerWithAddress;
   let deployer: SignerWithAddress;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (await ethers.getContractFactory('MappingChallenge', deployer)).deploy();
+    target = (await (
+      await ethers.getContractFactory('MappingChallenge', deployer)
+    ).deploy()) as unknown as MappingChallenge;
 
     await target.waitForDeployment();
 

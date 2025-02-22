@@ -15,7 +15,7 @@ describe('DonationChallenge', () => {
     target = await (
       await ethers.getContractFactory('DonationChallenge', deployer)
     ).deploy({
-      value: utils.parseEther('1'),
+      value: ethers.parseEther('1'),
     });
 
     await target.waitForDeployment();

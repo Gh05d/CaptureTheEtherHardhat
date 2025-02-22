@@ -1,17 +1,20 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
 
-describe('DeployAContract', () => {
+import { CallMeChallenge } from '../typechain-types';
+
+describe('CallMeChallenge', () => {
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
-  let target: Contract;
+  let target: CallMeChallenge;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (await ethers.getContractFactory('CallMeChallenge', deployer)).deploy();
+    target = (await (
+      await ethers.getContractFactory('CallMeChallenge', deployer)
+    ).deploy()) as unknown as CallMeChallenge;
 
     await target.waitForDeployment();
 
@@ -19,6 +22,8 @@ describe('DeployAContract', () => {
   });
 
   it('exploit', async () => {
+    await target.connect(attacker).callme();
+
     expect(await target.isComplete()).to.equal(true);
   });
 });

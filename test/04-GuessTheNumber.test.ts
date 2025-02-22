@@ -1,22 +1,23 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
-const { utils, provider } = ethers;
+const { provider } = ethers;
+
+import { GuessTheNumberChallenge } from '../typechain-types';
 
 describe('GuessTheNumberChallenge', () => {
-  let target: Contract;
+  let target: GuessTheNumberChallenge;
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (
+    target = (await (
       await ethers.getContractFactory('GuessTheNumberChallenge', deployer)
     ).deploy({
-      value: utils.parseEther('1'),
-    });
+      value: ethers.parseEther('1'),
+    })) as unknown as GuessTheNumberChallenge;
 
     await target.waitForDeployment();
 
@@ -24,10 +25,8 @@ describe('GuessTheNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
+    await target.guess(42, { value: ethers.parseEther('1') });
 
-    expect(await provider.getBalance(target.address)).to.equal(0);
+    expect(await provider.getBalance(target.getAddress())).to.equal(0);
   });
 });

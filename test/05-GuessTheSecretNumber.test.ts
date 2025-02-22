@@ -1,22 +1,22 @@
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 import { expect } from 'chai';
-import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
-const { utils } = ethers;
+
+import { GuessTheSecretNumberChallenge } from '../typechain-types';
 
 describe('GuessTheSecretNumberChallenge', () => {
-  let target: Contract;
+  let target: GuessTheSecretNumberChallenge;
   let deployer: SignerWithAddress;
   let attacker: SignerWithAddress;
 
   before(async () => {
     [attacker, deployer] = await ethers.getSigners();
 
-    target = await (
+    target = (await (
       await ethers.getContractFactory('GuessTheSecretNumberChallenge', deployer)
     ).deploy({
-      value: utils.parseEther('1'),
-    });
+      value: ethers.parseEther('1'),
+    })) as unknown as GuessTheSecretNumberChallenge;
 
     await target.waitForDeployment();
 
@@ -24,9 +24,21 @@ describe('GuessTheSecretNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    /**
-     * YOUR CODE HERE
-     * */
+    const hash = await ethers.provider.getStorage(target.getAddress(), 0);
+
+    let solution = 0;
+
+    for (let i = 0; i < 256; i++) {
+      const paddedHex = ethers.toBeHex(i, 1);
+      const guess = ethers.keccak256(paddedHex);
+
+      if (hash === guess) {
+        solution = i;
+        break;
+      }
+    }
+
+    await target.guess(solution, { value: ethers.parseEther('1') });
 
     expect(await target.isComplete()).to.equal(true);
   });
