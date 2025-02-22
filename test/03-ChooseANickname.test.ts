@@ -30,8 +30,6 @@ describe('NicknameChallenge', () => {
   });
 
   it('exploit', async () => {
-    await captureTheEther.setNickname(ethers.encodeBytes32String('Evil Nickname'));
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

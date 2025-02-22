@@ -40,9 +40,6 @@ describe('TokenBankChallenge', () => {
   });
 
   it('exploit', async () => {
-    await attackerContract.setBankContract(target.getAddress(), token.getAddress());
-    await attackerContract.connect(attacker).attack();
-
     expect(await token.balanceOf(target.getAddress())).to.equal(0);
     expect(await token.balanceOf(attackerContract.getAddress())).to.equal(
       ethers.parseEther(TOTAL_TOKENS_SUPPLY.toString())

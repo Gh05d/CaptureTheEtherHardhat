@@ -24,15 +24,6 @@ describe('GuessTheNewNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    const AttackerFactory = await ethers.getContractFactory('Attacker', attacker);
-    const attackerContract = (await AttackerFactory.deploy(target.getAddress(), {
-      value: ethers.parseEther('1'),
-    })) as unknown as Attacker;
-
-    await attackerContract.waitForDeployment();
-
-    await attackerContract.connect(attacker).attack();
-
     expect(await provider.getBalance(target.getAddress())).to.equal(0);
   });
 });

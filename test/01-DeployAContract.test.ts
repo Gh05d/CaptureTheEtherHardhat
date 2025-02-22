@@ -14,12 +14,6 @@ describe('DeployChallenge', () => {
   });
 
   it('exploit', async () => {
-    target = (await (
-      await ethers.getContractFactory('DeployChallenge', deployer)
-    ).deploy()) as unknown as DeployChallenge;
-
-    await target.waitForDeployment();
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

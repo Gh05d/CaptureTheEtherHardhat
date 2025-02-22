@@ -22,8 +22,6 @@ describe('CallMeChallenge', () => {
   });
 
   it('exploit', async () => {
-    await target.connect(attacker).callme();
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

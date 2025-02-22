@@ -24,22 +24,6 @@ describe('GuessTheSecretNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    const hash = await ethers.provider.getStorage(target.getAddress(), 0);
-
-    let solution = 0;
-
-    for (let i = 0; i < 256; i++) {
-      const paddedHex = ethers.toBeHex(i, 1);
-      const guess = ethers.keccak256(paddedHex);
-
-      if (hash === guess) {
-        solution = i;
-        break;
-      }
-    }
-
-    await target.guess(solution, { value: ethers.parseEther('1') });
-
     expect(await target.isComplete()).to.equal(true);
   });
 });

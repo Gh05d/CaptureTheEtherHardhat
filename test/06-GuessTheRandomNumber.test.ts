@@ -25,9 +25,6 @@ describe('GuessTheRandomNumberChallenge', () => {
   });
 
   it('exploit', async () => {
-    const savedAnswer = await provider.getStorage(target.getAddress(), 0);
-    await target.guess(savedAnswer, { value: ethers.parseEther('1') });
-
     expect(await target.isComplete()).to.equal(true);
   });
 });
